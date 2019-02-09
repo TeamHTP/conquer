@@ -4,7 +4,7 @@ const Conquer = new Vue({
     wires: 2,
     moments: 4,
     state: math.matrix([1, 0, 0, 0]),
-    step: 0,
+    step: -1,
     operations: [
       ["ID", "ID"],
       ["ID", "ID"],
@@ -16,14 +16,16 @@ const Conquer = new Vue({
   methods: {
     simulateForward: function () {
       const step = this.step;
-      if (this.step !== this.moments) {
+      if (step < this.moments - 1) {
         this.state = math.multiply(this.state, this.getOperationMatrix(step + 1));
+        this.step++;
       }
     },
     simulateBackward: function () {
       const step = this.step;
-      if (step !== 0) {
+      if (step >= 0) {
         this.state = math.multiply(this.state, this.getOperationMatrix(step));
+        this.step--;
       }
     },
     joinControlledNot: function (step) {
