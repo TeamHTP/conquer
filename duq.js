@@ -64,7 +64,8 @@ GATES.H = (qubit1) => {
   };
 };
 
-GATES.cX = (qubit1, qubit2) {
+// Controlled X
+GATES.cX => (qubit1, qubit2) {
   var cXMatrix = math.matrix([
     [math.bignumber(1), math.bignumber(0), math.bignumber(0), math.bignumber(0)],
     [math.bignumber(0), math.bignumber(1), math.bignumber(0), math.bignumber(0)],
