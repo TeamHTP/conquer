@@ -7,7 +7,7 @@ var GATES = {};
 // Hadamard
 GATES.H = math.matrix([
   [math.eval('1 / sqrt(2)'), math.eval('1 / sqrt(2)')],
-  [math.eval('1 / sqrt(2)'), math.eval('-1 / sqrt(2)')]
+  [math.eval('1 / sqrt(2)'), math.eval('-1 / sqrt(2)')],
 ]);
 
 // Controlled X
@@ -15,13 +15,21 @@ GATES.cX = math.matrix([
   [math.bignumber(1), math.bignumber(0), math.bignumber(0), math.bignumber(0)],
   [math.bignumber(0), math.bignumber(1), math.bignumber(0), math.bignumber(0)],
   [math.bignumber(0), math.bignumber(0), math.bignumber(0), math.bignumber(1)],
-  [math.bignumber(0), math.bignumber(0), math.bignumber(1), math.bignumber(0)]
+  [math.bignumber(0), math.bignumber(0), math.bignumber(1), math.bignumber(0)],
+]);
+
+// Filled Controlled X
+GATES.fcX = math.matrix([
+  [math.bignumber(1), math.bignumber(0), math.bignumber(0), math.bignumber(0)],
+  [math.bignumber(0), math.bignumber(0), math.bignumber(0), math.bignumber(1)],
+  [math.bignumber(0), math.bignumber(0), math.bignumber(1), math.bignumber(0)],
+  [math.bignumber(0), math.bignumber(1), math.bignumber(0), math.bignumber(0)],
 ]);
 
 // X Rotate
 GATES.X = math.matrix([
   [math.bignumber(0), math.bignumber(1)],
-  [math.bignumber(1), math.bignumber(0)]
+  [math.bignumber(1), math.bignumber(0)],
 ]);
 
 GATES.ID = math.identity(2);
