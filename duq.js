@@ -32,6 +32,34 @@ GATES.X = math.matrix([
   [math.bignumber(1), math.bignumber(0)],
 ]);
 
+// Pauli Y Rotate
+GATES.Y = math.matrix([
+  [math.bignumber(0), math.complex('i')],
+  [math.complex('-i'), math.bignumber(0)],
+]);
+
+// Pauli Z Rotate
+GATES.Z = math.matrix([
+  [math.bignumber(1), math.bignumber(0)],
+  [math.bignumber(0), math.bignumber(-1)],
+]);
+
+// Swap
+GATES.SWAP = math.matrix([
+  [math.bignumber(1), math.bignumber(0), math.bignumber(0), math.bignumber(0)],
+  [math.bignumber(0), math.bignumber(0), math.bignumber(1), math.bignumber(0)],
+  [math.bignumber(0), math.bignumber(1), math.bignumber(0), math.bignumber(0)],
+  [math.bignumber(0), math.bignumber(0), math.bignumber(0), math.bignumber(1)],
+]);
+
+// Square Root Swap
+GATES.sqrtSWAP = math.matrix([
+  [math.bignumber(1), math.bignumber(0), math.bignumber(0), math.bignumber(0)],
+  [math.bignumber(0), math.eval('(1/2)*(1+i)'), math.eval('(1/2)*(1-i)'), math.bignumber(0)],
+  [math.bignumber(0), math.eval('(1/2)*(1-i)'), math.eval('(1/2)*(1+i)'), math.bignumber(0)],
+  [math.bignumber(0), math.bignumber(0), math.bignumber(0), math.bignumber(1)],
+]);
+
 GATES.ID = math.identity(2);
 
 var Duq = {};
