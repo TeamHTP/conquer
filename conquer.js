@@ -3,6 +3,7 @@ const Conquer = new Vue({
   data: {
     wires: 3,
     moments: 5,
+    circuitStyle: '',
     //wireStates: [math.matrix([1, 0]), math.matrix([1, 0]), math.matrix([1, 0])],
     wireStatesBoolean: [false, false, false],
     state: math.matrix([1, 0, 0, 0, 0, 0, 0, 0]),
@@ -71,6 +72,7 @@ const Conquer = new Vue({
     },
     moments: function (val) {
       this.operations = math.resize(this.operations, [val, this.wires], "ID");
+      this.circuitStyle = `width: ${val * 180}px;`;
       this.$nextTick(function () {
         $('select.dropdown').dropdown();
       });
@@ -83,7 +85,7 @@ const Conquer = new Vue({
 
 $('select.dropdown').dropdown();
 
-dragula([document.getElementById('toolbox')].concat(Array.from(document.getElementsByClassName('wire'))), {
+var drake = dragula([document.getElementById('toolbox')].concat(Array.from(document.getElementsByClassName('slot'))), {
   isContainer: function (el) {
     return false;
   },
@@ -91,7 +93,7 @@ dragula([document.getElementById('toolbox')].concat(Array.from(document.getEleme
     return true;
   },
   accepts: function (el, target, source, sibling) {
-    return target.className !== 'toolbox';
+    return target.className !== 'toolbox' && (target.childNodes.length == 0 || target.childNodes[0].classList.contains('gu-transit'));
   },
   invalid: function (el, handle) {
     return false;
@@ -101,8 +103,104 @@ dragula([document.getElementById('toolbox')].concat(Array.from(document.getEleme
     return source.className === 'toolbox';
   },
   copySortSource: false,
-  revertOnSpill: false,
-  removeOnSpill: true,
+  revertOnSpill: function (el) {
+    return el.getAttribute('gate') === 'cXt';
+  },
+  removeOnSpill: function (el) {
+    return el.getAttribute('gate') !== 'cXt';
+  },
   mirrorContainer: document.body,
   ignoreInputTextSelection: true
 });
+
+drake.on('drop', function (el, target, source, sibling) {
+  checkPlacement(el, target, source);
+});
+
+function checkPlacement(el, target, source) {
+  var validPlacement = true;
+  var row = parseInt(target.getAttribute('row'), 10);
+  var moment = target.getAttribute('moment');
+  if (el.getAttribute('gate') === 'cX') {
+    var targetRow = row + 1;
+    if (targetRow >= Conquer.wires) {
+      targetRow = row - 1;
+    }
+    if (document.querySelector(`div[row="${targetRow}"][moment="${moment}"]`).childNodes.length > 0) {
+      if (!hasGate(document.querySelector(`div[row="${targetRow}"][moment="${moment}"]`), 'cXt')) {
+        targetRow = row - 1;
+      }
+    }
+    if (targetRow == -1) {
+      validPlacement = false;
+    }
+    else {
+      var targetMomentEls = document.querySelectorAll(`[moment="${moment}"]`);
+      var cXCount = 0;
+      var cXtCount = 0;
+      for (var i = 0; i < targetMomentEls.length; i++) {
+        if (hasGate(targetMomentEls[i], 'cX')) {
+          cXCount += 1;
+        }
+        if (hasGate(targetMomentEls[i], 'cXt')) {
+          cXtCount += 1;
+        }
+      }
+      if (cXCount > 1) {
+        validPlacement = false;
+      }
+
+      var targetEl = document.querySelector(`div[row="${targetRow}"][moment="${moment}"]`);
+      if (targetEl.childNodes.length !== 0 && !hasGate(targetEl, 'cXt')) {
+        validPlacement = false;
+      }
+      else {
+        if (validPlacement && cXtCount === 0) {
+          targetEl.innerHTML = `<div class="one-tall cx gate" gate="cXt" id="cXTarget">CXt</div>`;
+        }
+      }
+    }
+  }
+  else if (el.getAttribute('gate') === 'cXt') {
+    validPlacement = false;
+    if (hasGate(document.querySelector(`div[row="${row + 1}"][moment="${moment}"]`), 'cX')) {
+      validPlacement = true;
+    }
+    else if (hasGate(document.querySelector(`div[row="${row - 1}"][moment="${moment}"]`), 'cX')) {
+      validPlacement = true;
+    }
+    if (!validPlacement) {
+      var targetMomentEls = document.querySelectorAll(`div[moment="${moment}"]`);
+      for (var i = 0; i < targetMomentEls.length; i++) {
+        if (hasGate(targetMomentEls[i], 'cX')) {
+          targetMomentEls[i].removeChild(targetMomentEls[i].childNodes[0]);
+          break;
+        }
+      }
+    }
+  }
+  if (!validPlacement) {
+    el.parentElement.removeChild(el);
+    Conquer.operations[moment][row] = 'ID';
+  }
+  else {
+    Conquer.operations[moment][row] = el.getAttribute('gate');
+  }
+  if (source !== null) {
+    var sourceMomentEls = document.querySelectorAll(`div[moment="${source.getAttribute('moment')}"]`);
+    for (var i = 0; i < sourceMomentEls.length; i++) {
+      if (sourceMomentEls[i].childNodes.length === 1 && sourceMomentEls[i].getAttribute('row') != row) {
+        checkPlacement(sourceMomentEls[i].childNodes[0], sourceMomentEls[i], null);
+      }
+    }
+  }
+}
+
+function hasGate(el, gate) {
+  if (el === null || typeof el === 'undefined' || el.childNodes.length === 0) {
+    return false;
+  }
+  else {
+    return (el.childNodes[0].getAttribute('gate') === gate);
+  }
+}

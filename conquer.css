@@ -15,11 +15,49 @@
   margin-bottom: 8px;
 }
 
+.circuit {
+  padding-left: 16px;
+  overflow-x: auto;
+  height: calc(100vh - 200px);
+}
+
 .wire {
   width: 100%;
-  background-color: #222;
   margin-top: 32px;
   margin-bottom: 32px;
+  position: relative;
+}
+
+.wire:before {
+  content: '';
+  position: absolute;
+  top: 40px;
+  left: 62px;
+  border-top: 8px solid #eee;
+  background: black;
+  width: 900px;
+  transform: translateY(-50%);
+  z-index: -1;
+}
+
+.slot:before {
+  content: '';
+  position: absolute;
+  top: 32px;
+  left: 80px;
+  border-radius: 8px;
+  border: 8px solid #eee;
+  width: 8px;
+  height: 8px;
+  z-index: -1;
+}
+
+.slot {
+  width: 180px;
+  height: 50px;
+  display: inline-block;
+  text-align: center;
+  position: relative;
 }
 
 .gate {
@@ -35,6 +73,18 @@
   margin: 8px;
 }
 
+.gate.h {
+  background-color: #fff3b5;
+}
+
+.gate.x {
+  background-color: #ff857f;
+}
+
+.gate.cx {
+  background-color: #a48def;
+}
+
 .one-tall {
   padding: 12px;
   height: 64px;
@@ -44,6 +94,7 @@
   padding: 48px 12px 48px 12px;
   height: 128px;
   top: 32px;
+  margin-bottom: -64px;
   position: relative;
 }
 

@@ -71,19 +71,20 @@
         </div>
       </div>
     </div>-->
-    <div class="circuit" id="circuit">
+    <div class="circuit" id="circuit" :style="circuitStyle">
       <div class="wire" v-for="(row, rIndex) in transposedOperations" :id="'wire-' + rIndex">
-        &nbsp;
+        <div class="one-tall gate" style="border-top-left-radius: 0; border-bottom-left-radius: 0;">q{{ rIndex }} |{{ wireStatesBoolean[rIndex] ? '1' : '0' }}&#10217;</div>
+        <div class="slot" v-for="(col, cIndex) in row" :moment="cIndex" :row="rIndex" :gate="operations[cIndex][rIndex]"></div>
       </div>
     </div>
 
     <div class="toolbox" id="toolbox">
       <div class="toolbox-head">GATES</div>
-      <div class="one-tall gate" gate="H">H</div>
+      <div class="one-tall h gate" gate="H">H</div>
       <div class="one-tall gate" gate="ID">ID</div>
-      <div class="one-tall gate" gate="X">X</div>
-      <div class="one-tall gate" gate="measure">MEASURE</div>
-      <div class="two-tall gate" gate="cX">CX</div>
+      <div class="one-tall x gate" gate="X">X</div>
+      <div class="one-tall gate" gate="measure">measure</div>
+      <div class="one-tall cx gate" gate="cX">CX</div>
     </div>
   </div>
 
