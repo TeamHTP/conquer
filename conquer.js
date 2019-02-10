@@ -1,17 +1,17 @@
 const Conquer = new Vue({
   el: '#conquer',
   data: {
-    wires: 3,
+    wires: 4,
     moments: 3,
     circuitStyle: '',
     probabilityStyle: '',
     //wireStates: [math.matrix([1, 0]), math.matrix([1, 0]), math.matrix([1, 0])],
-    wireStatesBoolean: [false, false, false],
-    state: math.matrix([1, 0, 0, 0, 0, 0, 0, 0]),
+    wireStatesBoolean: [false, false, false, false],
+    state: math.matrix([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
     step: -1,
-    operations: math.map(math.zeros([3, 3]), v => "ID"),
+    operations: math.map(math.zeros([3, 4]), v => "ID"),
     GATES: GATES,
-    probabilities: [0, 0, 0],
+    probabilities: [0, 0, 0, 0],
     katex: {
       H: katex.renderToString(String.raw`\begin{pmatrix}
    \frac{1}{\sqrt{\smash[b]{2}}} & \frac{1}{\sqrt{\smash[b]{2}}} \\
