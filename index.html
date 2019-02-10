@@ -62,7 +62,7 @@
       <div class="wire" v-for="(row, rIndex) in transposedOperations" :id="'wire-' + rIndex">
         <div class="one-tall gate" style="border-top-left-radius: 0; border-bottom-left-radius: 0;" v-on:click="if (step == -1) {wireStatesBoolean[rIndex] = !wireStatesBoolean[rIndex]; $forceUpdate();}">q{{ rIndex }} |{{ wireStatesBoolean[rIndex] ? '1' : '0' }}&#10217;</div>
         <div class="slot" v-for="(col, cIndex) in row" :class="{highlight: step == cIndex}" :moment="cIndex" :row="rIndex" :gate="operations[cIndex][rIndex]"></div>
-        <div class="one-tall gate qubit-peek" style="border-top-right-radius: 0; border-bottom-right-radius: 0;" >q{{ rIndex }} P(1)={{ probabilities[rIndex].toFixed(2) }}</div>
+        <div class="one-tall gate qubit-peek" :class="{highlight: step == moments - 1}" style="border-top-right-radius: 0; border-bottom-right-radius: 0;" >q{{ rIndex }} P(1)={{ probabilities[rIndex].toFixed(2) }}</div>
       </div>
       <div class="row">
         <div class="column">

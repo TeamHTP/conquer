@@ -142,6 +142,10 @@
   right: -48px;
 }
 
+.highlight.qubit-peek {
+  border: 8px solid #c6e2b3;
+}
+
 .absolute-position {
   position: absolute;
 }

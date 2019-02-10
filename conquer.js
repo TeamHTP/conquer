@@ -2,13 +2,13 @@ const Conquer = new Vue({
   el: '#conquer',
   data: {
     wires: 3,
-    moments: 2,
+    moments: 3,
     circuitStyle: '',
     //wireStates: [math.matrix([1, 0]), math.matrix([1, 0]), math.matrix([1, 0])],
     wireStatesBoolean: [false, false, false],
     state: math.matrix([1, 0, 0, 0, 0, 0, 0, 0]),
     step: -1,
-    operations: math.map(math.zeros([2, 3]), v => "ID"),
+    operations: math.map(math.zeros([3, 3]), v => "ID"),
     GATES: GATES,
     probabilities: [0, 0, 0],
   },
@@ -72,16 +72,16 @@ const Conquer = new Vue({
           }
         }
       }
-      if (highestUsed > this.moments - 2) {
+      if (highestUsed > this.moments - 3) {
         this.moments += 1;
         this.$forceUpdate();
       }
-      if (highestUsed < this.moments - 2) {
-        this.moments -= (this.moments - 2 - highestUsed);
+      if (highestUsed < this.moments - 3) {
+        this.moments -= (this.moments - 3 - highestUsed);
         this.$forceUpdate();
       }
       this.$nextTick(function () {
-        Array.from(document.querySelectorAll(`.slot[moment="${parseInt(this.moments) - 1}"]`)).forEach((e) => {
+        Array.from(document.querySelectorAll(`.slot[moment="${parseInt(this.moments) - 2}"]`)).forEach((e) => {
           drake.containers.push(e);
         });
       });
@@ -114,7 +114,7 @@ const Conquer = new Vue({
     },
     moments: function (val) {
       this.operations = math.resize(this.operations, [val, this.wires], "ID");
-      this.circuitStyle = `width: ${(val + 2) * 180}px;`;
+      this.circuitStyle = `width: ${(val + 1) * 180}px;`;
     },
     operations: {
       handler: function (val) {
