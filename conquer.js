@@ -10,6 +10,7 @@ const Conquer = new Vue({
     step: -1,
     operations: math.map(math.zeros([2, 3]), v => "ID"),
     GATES: GATES,
+    probabilities: [0, 0, 0],
   },
   computed: {
     transposedOperations: function () {
@@ -89,10 +90,15 @@ const Conquer = new Vue({
       } else if(val > this.wireStates.length) {
         this.wireStatesBoolean.push(false);
       }
+      if (val < this.probabilities.length) {
+        this.probabilities.pop();
+      } else if(val > this.probabilities.length) {
+        this.probabilities.push(0);
+      }
     },
     moments: function (val) {
       this.operations = math.resize(this.operations, [val, this.wires], "ID");
-      this.circuitStyle = `width: ${(val + 1) * 180}px;`;
+      this.circuitStyle = `width: ${(val + 2) * 180}px;`;
     },
     wireStatesBoolean: function (val) {
       this.state = this.tensorProductState;
@@ -100,6 +106,20 @@ const Conquer = new Vue({
     operations: {
       handler: function (val) {
         this.resizeMoments();
+      },
+      deep: true
+    },
+    state: {
+      handler: function (val) {
+        for (var w = 0; w < this.wires; w++) {
+          var probSum = 0;
+          for (var i = 0; i < this.state._data.length; i++) {
+            if (math.floor(i / math.pow(2, w)) % 2 == 1) {
+              probSum += math.pow(math.abs(math.number(this.state._data[i])), 2);
+            }
+          }
+          this.probabilities[this.wires - w - 1] = probSum;
+        }
       },
       deep: true
     }
@@ -151,7 +171,7 @@ drake.on('remove', function (el, container, source) {
       if (hasGate(targetMomentEls[i], 'cX') || hasGate(targetMomentEls[i], 'cXt')) {
         targetMomentEls[i].removeChild(targetMomentEls[i].childNodes[0]);
         Conquer.operations[moment][targetMomentEls[i].getAttribute('row')] = 'ID';
-        this.resizeMoments();
+        Conquer.resizeMoments();
         break;
       }
     }

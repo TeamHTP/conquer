@@ -21,7 +21,7 @@
 
 .circuit {
   padding-left: 16px;
-  width: 540px;
+  width: 720px;
   height: calc(100vh - 158px);
 }
 
@@ -135,6 +135,11 @@
   top: 32px;
   margin-bottom: -64px;
   position: relative;
+}
+
+.qubit-peek {
+  position: absolute;
+  right: -48px;
 }
 
 .absolute-position {
