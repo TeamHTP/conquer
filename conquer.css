@@ -97,9 +97,9 @@
   content: '';
   position: absolute;
   top: -48px;
-  left: 80px;
+  left: 84px;
   border-radius: 8px;
-  border: 8px solid #eee;
+  border: 4px solid #eee;
   width: 8px;
   height: 64px;
   z-index: -1;
@@ -109,16 +109,16 @@
   content: '';
   position: absolute;
   top: 64px;
-  left: 80px;
+  left: 84px;
   border-radius: 8px;
-  border: 8px solid #eee;
+  border: 4px solid #eee;
   width: 8px;
   height: 64px;
   z-index: -1;
 }
 
 .highlight > .gate.cx:before {
-  border: 8px solid #c6e2b3;
+  border: 4px solid #c6e2b3;
 }
 
 .one-tall {
