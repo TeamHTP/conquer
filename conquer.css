@@ -1,5 +1,5 @@
 .toolbox {
-  height: 200px;
+  height: 158px;
   width: 100vw;
   border-top: 8px solid #eee;
   background-color: #fafafa;
@@ -18,7 +18,7 @@
 .circuit {
   padding-left: 16px;
   overflow-x: auto;
-  height: calc(100vh - 200px);
+  height: calc(100vh - 158px);
 }
 
 .wire {

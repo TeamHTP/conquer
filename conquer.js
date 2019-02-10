@@ -90,7 +90,7 @@ var drake = dragula([document.getElementById('toolbox')].concat(Array.from(docum
     return false;
   },
   moves: function (el, source, handle, sibling) {
-    return true;
+    return el.classList.contains('gate');
   },
   accepts: function (el, target, source, sibling) {
     return target.className !== 'toolbox' && (target.childNodes.length == 0 || target.childNodes[0].classList.contains('gu-transit'));
@@ -169,7 +169,7 @@ function checkPlacement(el, target, source) {
       }
       else {
         if (validPlacement && cXtCount === 0) {
-          targetEl.innerHTML = `<div class="one-tall cx gate" gate="cXt" id="cXTarget">CXt</div>`;
+          targetEl.innerHTML = `<div class="one-tall cx gate" gate="cXt" id="cXTarget">CNOTt</div>`;
         }
       }
     }
@@ -202,7 +202,7 @@ function checkPlacement(el, target, source) {
   if (source !== null) {
     var sourceMomentEls = document.querySelectorAll(`div[moment="${source.getAttribute('moment')}"]`);
     for (var i = 0; i < sourceMomentEls.length; i++) {
-      if (sourceMomentEls[i].childNodes.length === 1 && sourceMomentEls[i].getAttribute('row') != row) {
+      if (sourceMomentEls[i].childNodes.length === 1) {
         checkPlacement(sourceMomentEls[i].childNodes[0], sourceMomentEls[i], null);
       }
     }
