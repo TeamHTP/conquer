@@ -41,19 +41,6 @@
           </select>
         </div>
       </div>
-
-      <div class="row">
-        <div class="column">
-          <button class="ui labeled icon button" v-on:click="simulateBackward()">
-            <i class="left arrow icon"></i>
-            Backward
-          </button>
-          <button class="ui right labeled icon button" v-on:click="simulateForward()">
-            Forward
-            <i class="right arrow icon"></i>
-          </button>
-        </div>
-      </div>
     </div>-->
     <!--<div class="ui equal width grid container">
 
@@ -75,6 +62,18 @@
       <div class="wire" v-for="(row, rIndex) in transposedOperations" :id="'wire-' + rIndex">
         <div class="one-tall gate" style="border-top-left-radius: 0; border-bottom-left-radius: 0;">q{{ rIndex }} |{{ wireStatesBoolean[rIndex] ? '1' : '0' }}&#10217;</div>
         <div class="slot" v-for="(col, cIndex) in row" :class="{highlight: step == cIndex}" :moment="cIndex" :row="rIndex" :gate="operations[cIndex][rIndex]"></div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <button class="ui labeled icon button" v-on:click="simulateBackward()">
+            <i class="left arrow icon"></i>
+            Backward
+          </button>
+          <button class="ui right labeled icon button" v-on:click="simulateForward()">
+            Forward
+            <i class="right arrow icon"></i>
+          </button>
+        </div>
       </div>
     </div>
 
