@@ -36,6 +36,7 @@
 
 .wire {
   width: calc(100% - 250px);
+  min-width: calc(100vw - 250px);
   margin-top: 32px;
   margin-bottom: 32px;
   position: relative;
