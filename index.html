@@ -64,6 +64,9 @@
         <div class="slot" v-for="(col, cIndex) in row" :class="{highlight: step == cIndex}" :moment="cIndex" :row="rIndex" :gate="operations[cIndex][rIndex]"></div>
         <div class="one-tall gate qubit-peek" :class="{highlight: step == moments - 1}" style="border-top-right-radius: 0; border-bottom-right-radius: 0;" >q{{ rIndex }} P(1)={{ probabilities[rIndex].toFixed(2) }}</div>
       </div>
+    </div>
+
+    <div class="toolbox" id="toolbox">
       <div class="row">
         <div class="column">
           <button class="ui labeled icon button" v-on:click="simulateBackward()">
@@ -76,10 +79,6 @@
           </button>
         </div>
       </div>
-    </div>
-
-    <div class="toolbox" id="toolbox">
-      <div class="toolbox-head">GATES</div>
       <div class="one-tall h gate" gate="H">H</div>
       <div class="one-tall gate" gate="ID">ID</div>
       <div class="one-tall x gate" gate="X">NOT</div>

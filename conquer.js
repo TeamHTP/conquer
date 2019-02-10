@@ -48,9 +48,12 @@ const Conquer = new Vue({
     scrollCircuitView: function() {
       var wWidth = $(window).width();
       var matchPoint = wWidth / 2;
-      var delta = (this.step + 2) * 180 - matchPoint;
+      var delta = ((this.step + 2) * 180) - 64 - matchPoint;
       if (delta > 0) {
         $('#conquer').scrollLeft(delta);
+      }
+      else {
+        $('#conquer').scrollLeft(0);
       }
     },
     joinControlledNot: function (step) {

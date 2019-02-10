@@ -17,6 +17,7 @@
 
 #conquer {
   overflow-x: auto;
+  scroll-behavior: smooth;
 }
 
 .circuit {
@@ -141,6 +142,7 @@
   position: absolute;
   margin-right: 16px;
   right: -48px;
+  z-index: 10;
 }
 
 .highlight.qubit-peek {
