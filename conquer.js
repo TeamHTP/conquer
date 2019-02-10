@@ -33,6 +33,7 @@ const Conquer = new Vue({
         this.state = math.multiply(this.state, this.getOperationMatrix(step + 1));
         this.step++;
         this.deriveProbabilities();
+        this.scrollCircuitView();
       }
     },
     simulateBackward: function () {
@@ -41,6 +42,15 @@ const Conquer = new Vue({
         this.state = math.multiply(this.state, this.getOperationMatrix(step));
         this.step--;
         this.deriveProbabilities();
+        this.scrollCircuitView();
+      }
+    },
+    scrollCircuitView: function() {
+      var wWidth = $(window).width();
+      var matchPoint = wWidth / 2;
+      var delta = (this.step + 2) * 180 - matchPoint;
+      if (delta > 0) {
+        $('#conquer').scrollLeft(delta);
       }
     },
     joinControlledNot: function (step) {

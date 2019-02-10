@@ -139,6 +139,7 @@
 
 .qubit-peek {
   position: absolute;
+  margin-right: 16px;
   right: -48px;
 }
 
