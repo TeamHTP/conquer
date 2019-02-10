@@ -26,9 +26,13 @@ const Conquer = new Vue({
   methods: {
     simulateForward: function () {
       const step = this.step;
+      if (step == -1) {
+        this.state = this.tensorProductState._data[0];
+      }
       if (step < this.moments - 1) {
         this.state = math.multiply(this.state, this.getOperationMatrix(step + 1));
         this.step++;
+        this.deriveProbabilities();
       }
     },
     simulateBackward: function () {
@@ -36,6 +40,7 @@ const Conquer = new Vue({
       if (step >= 0) {
         this.state = math.multiply(this.state, this.getOperationMatrix(step));
         this.step--;
+        this.deriveProbabilities();
       }
     },
     joinControlledNot: function (step) {
@@ -80,7 +85,18 @@ const Conquer = new Vue({
           drake.containers.push(e);
         });
       });
-    }
+    },
+    deriveProbabilities: function() {
+      for (var w = 0; w < this.wires; w++) {
+        var probSum = 0;
+        for (var i = 0; i < this.state._data.length; i++) {
+          if (math.floor(i / math.pow(2, w)) % 2 == 1) {
+            probSum += math.pow(math.abs(math.number(this.state._data[i])), 2);
+          }
+        }
+        this.probabilities[this.wires - w - 1] = probSum;
+      }
+    },
   },
   watch: {
     wires: function (val) {
@@ -100,9 +116,6 @@ const Conquer = new Vue({
       this.operations = math.resize(this.operations, [val, this.wires], "ID");
       this.circuitStyle = `width: ${(val + 2) * 180}px;`;
     },
-    wireStatesBoolean: function (val) {
-      this.state = this.tensorProductState;
-    },
     operations: {
       handler: function (val) {
         this.resizeMoments();
@@ -111,15 +124,7 @@ const Conquer = new Vue({
     },
     state: {
       handler: function (val) {
-        for (var w = 0; w < this.wires; w++) {
-          var probSum = 0;
-          for (var i = 0; i < this.state._data.length; i++) {
-            if (math.floor(i / math.pow(2, w)) % 2 == 1) {
-              probSum += math.pow(math.abs(math.number(this.state._data[i])), 2);
-            }
-          }
-          this.probabilities[this.wires - w - 1] = probSum;
-        }
+        this.deriveProbabilities();
       },
       deep: true
     }
