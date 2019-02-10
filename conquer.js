@@ -117,6 +117,19 @@ drake.on('drop', function (el, target, source, sibling) {
   checkPlacement(el, target, source);
 });
 
+drake.on('remove', function (el, container, source) {
+  if (el.getAttribute('gate') === 'cX' || el.getAttribute('gate') === 'cXt') {
+    var moment = source.getAttribute('moment');
+    var targetMomentEls = document.querySelectorAll(`div[moment="${moment}"]`);
+    for (var i = 0; i < targetMomentEls.length; i++) {
+      if (hasGate(targetMomentEls[i], 'cX') || hasGate(targetMomentEls[i], 'cXt')) {
+        targetMomentEls[i].removeChild(targetMomentEls[i].childNodes[0]);
+        break;
+      }
+    }
+  }
+});
+
 function checkPlacement(el, target, source) {
   var validPlacement = true;
   var row = parseInt(target.getAttribute('row'), 10);
