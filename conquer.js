@@ -12,6 +12,34 @@ const Conquer = new Vue({
     operations: math.map(math.zeros([3, 3]), v => "ID"),
     GATES: GATES,
     probabilities: [0, 0, 0],
+    katex: {
+      H: katex.renderToString(String.raw`\begin{pmatrix}
+   \frac{1}{\sqrt{\smash[b]{2}}} & \frac{1}{\sqrt{\smash[b]{2}}} \\
+   \frac{1}{\sqrt{\smash[b]{2}}} & \frac{-1}{\sqrt{\smash[b]{2}}}
+\end{pmatrix}`, {throwOnError: false}),
+      X: katex.renderToString(String.raw`\begin{pmatrix}
+   0 & 1 \\
+   1 & 0
+\end{pmatrix}`, {throwOnError: false}),
+      Y: katex.renderToString(String.raw`\begin{pmatrix}
+   0 & -i \\
+   i & 0
+\end{pmatrix}`, {throwOnError: false}),
+      Z: katex.renderToString(String.raw`\begin{pmatrix}
+   1 & 0 \\
+   0 & -1
+\end{pmatrix}`, {throwOnError: false}),
+      ID: katex.renderToString(String.raw`\begin{pmatrix}
+   1 & 0 \\
+   0 & 1
+\end{pmatrix}`, {throwOnError: false}),
+      cX: katex.renderToString(String.raw`\begin{pmatrix}
+   1 & 0 & 0 & 0 \\
+   0 & 1 & 0 & 0 \\
+   0 & 0 & 0 & 1 \\
+   0 & 0 & 1 & 0
+\end{pmatrix}`, {throwOnError: false})
+    }
   },
   computed: {
     transposedOperations: function () {
@@ -105,12 +133,20 @@ const Conquer = new Vue({
         var probSum = 0;
         for (var i = 0; i < this.state._data.length; i++) {
           if (math.floor(i / math.pow(2, w)) % 2 == 1) {
-            probSum += math.pow(math.abs(math.number(this.state._data[i])), 2);
+            probSum += math.number(math.pow(math.abs(this.state._data[i]), 2));
           }
         }
         this.probabilities[this.wires - w - 1] = probSum;
       }
     },
+    gatePopups: function() {
+      $('.gate[gate="H"]').popup({popup: '.popup[gate="H"]'});
+      $('.gate[gate="X"]').popup({popup: '.popup[gate="X"]'});
+      $('.gate[gate="Y"]').popup({popup: '.popup[gate="Y"]'});
+      $('.gate[gate="Z"]').popup({popup: '.popup[gate="Z"]'});
+      $('.gate[gate="ID"]').popup({popup: '.popup[gate="ID"]'});
+      $('.gate[gate="cX"]').popup({popup: '.popup[gate="cX"]'});
+    }
   },
   watch: {
     wires: function (val) {
@@ -146,6 +182,7 @@ const Conquer = new Vue({
 });
 
 $('select.dropdown').dropdown();
+Conquer.gatePopups();
 
 var drake = dragula([document.getElementById('toolbox')].concat(Array.from(document.getElementsByClassName('slot'))), {
   isContainer: function (el) {

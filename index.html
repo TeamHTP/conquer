@@ -5,59 +5,13 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" href="https://unpkg.com/semantic-ui-css@2.4.1/semantic.min.css">
   <link rel="stylesheet" href="https://unpkg.com/dragula@3.7.2/dist/dragula.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+  </head>
   <link rel="stylesheet" href="conquer.css">
 </head>
 <body>
 
   <div id="conquer">
-    <!--<div class="ui equal width grid container">
-      <div class="row">
-        <div class="column">
-          <div class="ui buttons">
-            <button class="ui button" v-on:click="wires -= 1">&minus;</button>
-            <button class="ui disabled button">{{ wires }}</button>
-            <button class="ui button" v-on:click="wires += 1">&plus;</button>
-          </div>
-          <span>&#215;</span>
-          <div class="ui buttons">
-              <button class="ui button" v-on:click="moments -= 1">&minus;</button>
-              <button class="ui disabled button">{{ moments }}</button>
-              <button class="ui button" v-on:click="moments += 1">&plus;</button>
-            </div>
-        </div>
-        <span>{{ step }}</span>
-      </div>
-
-      <div class="row" v-for="(row, rIndex) in transposedOperations">
-        <div class="column">
-          <div class="ui checkbox">
-            <input type="checkbox" v-model="wireStatesBoolean[rIndex]">
-            <label>|{{ wireStatesBoolean[rIndex] ? '1' : '0' }}&#10217;</label>
-          </div>
-        </div>
-        <div class="column" v-for="(col, cIndex) in row">
-          <select class="ui dropdown" v-model="operations[cIndex][rIndex]">
-            <option v-for="(value, key) in GATES">{{ key }}</option>
-          </select>
-        </div>
-      </div>
-    </div>-->
-    <!--<div class="ui equal width grid container">
-
-      <div class="row" v-for="(row, rIndex) in transposedOperations">
-        <div class="column">
-          <div class="ui checkbox">
-            <input type="checkbox" v-model="wireStatesBoolean[rIndex]">
-            <label>|{{ wireStatesBoolean[rIndex] ? '1' : '0' }}&#10217;</label>
-          </div>
-        </div>
-        <div class="column" v-for="(col, cIndex) in row">
-          <select class="ui dropdown" v-model="operations[cIndex][rIndex]">
-            <option v-for="(value, key) in GATES">{{ key }}</option>
-          </select>
-        </div>
-      </div>
-    </div>-->
     <div class="circuit" id="circuit" :style="circuitStyle">
       <div class="wire" v-for="(row, rIndex) in transposedOperations" :id="'wire-' + rIndex">
         <div class="one-tall gate" style="border-top-left-radius: 0; border-bottom-left-radius: 0;" v-on:click="if (step == -1) {wireStatesBoolean[rIndex] = !wireStatesBoolean[rIndex]; $forceUpdate();}">q{{ rIndex }} |{{ wireStatesBoolean[rIndex] ? '1' : '0' }}&#10217;</div>
@@ -83,8 +37,58 @@
       <div class="one-tall h gate" gate="H">H</div>
       <div class="one-tall gate" gate="ID">ID</div>
       <div class="one-tall x gate" gate="X">NOT</div>
+      <div class="one-tall x gate" gate="Y">Y</div>
+      <div class="one-tall x gate" gate="Z">Z</div>
       <div class="one-tall cx gate" gate="cX">CNOT</div>
       <!--<div class="one-tall gate" gate="measure">Measure</div>-->
+      <div class="toolbox-head" style="cursor: pointer; text-decoration: underline;" @click="$('#about-modal').modal('show');">ABOUT</div>
+    </div>
+    <div class="ui popup" gate="H">
+      <span v-html="katex.H"></span>
+    </div>
+    <div class="ui popup" gate="ID">
+      <span v-html="katex.ID"></span>
+    </div>
+    <div class="ui popup" gate="X">
+      <span v-html="katex.X"></span>
+    </div>
+    <div class="ui popup" gate="Y">
+      <span v-html="katex.Y"></span>
+    </div>
+    <div class="ui popup" gate="Z">
+      <span v-html="katex.Z"></span>
+    </div>
+    <div class="ui popup" gate="cX">
+      <span v-html="katex.cX"></span>
+    </div>
+  </div>
+
+
+  <div class="ui modal" id="about-modal">
+    <i class="close icon"></i>
+    <div class="header">
+      About
+    </div>
+    <div class="content">
+      <div class="description">
+        <div class="ui header">Simulated quantum computing environment.</div>
+        <p>conQuer is a stand-alone quantum computer circuit playground designed to help people interested in quantum computing to gain practical experience with quantum logic.</p>
+        <div class="ui header">Attributions</div>
+        <p>conQuer includes the following open source projects:</p>
+        <ul>
+          <li>semantic-ui</li>
+          <li>dragula</li>
+          <li>vue.js</li>
+          <li>jQuery</li>
+          <li>math.js</li>
+          <li>KATEX</li>
+        </ul>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui deny button">
+        Close
+      </div>
     </div>
   </div>
 
@@ -93,7 +97,9 @@
   <script src="https://unpkg.com/jquery@3.3.1/dist/jquery.min.js"></script>
   <script src="https://unpkg.com/semantic-ui-css@2.4.1/semantic.min.js"></script>
   <script src="https://unpkg.com/dragula@3.7.2/dist/dragula.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
   <script src="duq.js"></script>
   <script src="conquer.js"></script>
+
 </body>
 </html>
