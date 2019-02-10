@@ -12,12 +12,29 @@
     <div class="ui equal width grid container">
       <div class="row">
         <div class="column">
-          <div class="ui input"><input type="text" v-model="wires"></div>
+          <div class="ui buttons">
+            <button class="ui button" v-on:click="wires -= 1">&minus;</button>
+            <button class="ui disabled button">{{ wires }}</button>
+            <button class="ui button" v-on:click="wires += 1">&plus;</button>
+          </div>
           <span>&#215;</span>
-          <div class="ui input"><input type="text" v-model="moments"></div>
+          <div class="ui buttons">
+              <button class="ui button" v-on:click="moments -= 1">&minus;</button>
+              <button class="ui disabled button">{{ moments }}</button>
+              <button class="ui button" v-on:click="moments += 1">&plus;</button>
+            </div>
         </div>
+        <span>{{ step }}</span>
       </div>
-      <div class="row">
+      <!-- <div class="row">
+        <div class="column">
+          <div v-for="wire in wires">
+            <div class="ui checkbox">
+              <input type="checkbox">
+              <label>|0&#10217;</label>
+            </div>
+          </div>
+        </div>
         <div class="column" v-for="(column, cIndex) in operations">
           <div v-for="(operation, oIndex) in column">
             <select class="ui dropdown" v-model="operations[cIndex][oIndex]">
@@ -25,7 +42,22 @@
             </select>
           </div>
         </div>
+      </div> -->
+
+      <div class="row" v-for="(row, rIndex) in transposedOperations">
+        <div class="column">
+          <div class="ui checkbox">
+            <input type="checkbox" v-model="wireStatesBoolean[rIndex]">
+            <label>|{{ wireStatesBoolean[rIndex] ? '1' : '0' }}&#10217;</label>
+          </div>
+        </div>
+        <div class="column" v-for="(col, cIndex) in row">
+          <select class="ui dropdown" v-model="operations[cIndex][rIndex]">
+            <option v-for="(value, key) in GATES">{{ key }}</option>
+          </select>
+        </div>
       </div>
+
       <div class="row">
         <div class="column">
           <button class="ui labeled icon button" v-on:click="simulateBackward()">
