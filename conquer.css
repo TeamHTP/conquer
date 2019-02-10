@@ -1,0 +1,52 @@
+.toolbox {
+  height: 200px;
+  width: 100vw;
+  border-top: 8px solid #eee;
+  background-color: #fafafa;
+  padding: 8px;
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+}
+
+.toolbox-head {
+  text-align: center;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.wire {
+  width: 100%;
+  background-color: #222;
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
+.gate {
+  border-radius: 32px;
+  font-size: 32px;
+  background-color: #fafafa;
+  border: 8px solid #eee;
+  min-width: 128px;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+  margin: 8px;
+}
+
+.one-tall {
+  padding: 12px;
+  height: 64px;
+}
+
+.two-tall {
+  padding: 48px 12px 48px 12px;
+  height: 128px;
+  top: 32px;
+  position: relative;
+}
+
+.absolute-position {
+  position: absolute;
+}

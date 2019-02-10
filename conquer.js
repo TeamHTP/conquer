@@ -82,3 +82,27 @@ const Conquer = new Vue({
 });
 
 $('select.dropdown').dropdown();
+
+dragula([document.getElementById('toolbox')].concat(Array.from(document.getElementsByClassName('wire'))), {
+  isContainer: function (el) {
+    return false;
+  },
+  moves: function (el, source, handle, sibling) {
+    return true;
+  },
+  accepts: function (el, target, source, sibling) {
+    return target.className !== 'toolbox';
+  },
+  invalid: function (el, handle) {
+    return false;
+  },
+  direction: 'horizontal',
+  copy: function (el, source) {
+    return source.className === 'toolbox';
+  },
+  copySortSource: false,
+  revertOnSpill: false,
+  removeOnSpill: true,
+  mirrorContainer: document.body,
+  ignoreInputTextSelection: true
+});

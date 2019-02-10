@@ -26,7 +26,7 @@ GATES.fcX = math.matrix([
   [math.bignumber(0), math.bignumber(1), math.bignumber(0), math.bignumber(0)],
 ]);
 
-// X Rotate
+// Pauli X Rotate
 GATES.X = math.matrix([
   [math.bignumber(0), math.bignumber(1)],
   [math.bignumber(1), math.bignumber(0)],
