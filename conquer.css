@@ -1,7 +1,7 @@
 .toolbox {
   height: 158px;
   width: 100vw;
-  border-top: 8px solid #eee;
+  border-top: 8px solid #e0e1e2;
   background-color: #fafafa;
   padding: 8px;
   text-align: center;
@@ -45,7 +45,7 @@
   position: absolute;
   top: 40px;
   left: 62px;
-  border-top: 8px solid #eee;
+  border-top: 8px solid #e0e1e2;
   width: calc(100% - 62px);
   transform: translateY(-50%);
   z-index: -1;
@@ -57,7 +57,7 @@
   top: 32px;
   left: 80px;
   border-radius: 8px;
-  border: 8px solid #eee;
+  border: 8px solid #e0e1e2;
   width: 8px;
   height: 8px;
   z-index: -1;
@@ -75,7 +75,7 @@
   border-radius: 32px;
   font-size: 32px;
   background-color: #fafafa;
-  border: 8px solid #eee;
+  border: 8px solid #e0e1e2;
   min-width: 128px;
   text-align: center;
   display: inline-block;
@@ -102,7 +102,7 @@
   top: -48px;
   left: 84px;
   border-radius: 8px;
-  border: 4px solid #eee;
+  border: 4px solid #e0e1e2;
   width: 8px;
   height: 64px;
   z-index: -1;
@@ -114,7 +114,7 @@
   top: 64px;
   left: 84px;
   border-radius: 8px;
-  border: 4px solid #eee;
+  border: 4px solid #e0e1e2;
   width: 8px;
   height: 64px;
   z-index: -1;
