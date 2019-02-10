@@ -21,6 +21,14 @@
   height: calc(100vh - 158px);
 }
 
+.slot.highlight:before {
+  border: 8px solid #c6e2b3;
+}
+
+.highlight > .gate {
+  border: 8px solid #c6e2b3;
+}
+
 .wire {
   width: 100%;
   margin-top: 32px;
@@ -83,6 +91,30 @@
 
 .gate.cx {
   background-color: #a48def;
+}
+
+.gate.cx.before:before {
+  content: '';
+  position: absolute;
+  top: -48px;
+  left: 80px;
+  border-radius: 8px;
+  border: 8px solid #eee;
+  width: 8px;
+  height: 64px;
+  z-index: -1;
+}
+
+.gate.cx.after:before {
+  content: '';
+  position: absolute;
+  top: 64px;
+  left: 80px;
+  border-radius: 8px;
+  border: 8px solid #eee;
+  width: 8px;
+  height: 64px;
+  z-index: -1;
 }
 
 .one-tall {

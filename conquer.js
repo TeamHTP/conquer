@@ -41,11 +41,11 @@ const Conquer = new Vue({
       let operations = this.operations[step];
       let result = [];
       for (let i = 0; i < operations.length; i++) {
-        if (operations[i] === "cXControl") {
+        if (operations[i] === "cX") {
           result.push(GATES.cX);
           i++;
           continue;
-        } else if (operations[i] === "cXTarget") {
+        } else if (operations[i] === "cXt") {
             result.push(GATES.fcX);
             i++;
             continue;
@@ -118,12 +118,15 @@ drake.on('drop', function (el, target, source, sibling) {
 });
 
 drake.on('remove', function (el, container, source) {
+  var row = parseInt(source.getAttribute('row'), 10);
+  var moment = source.getAttribute('moment');
+  Conquer.operations[moment][row] = 'ID';
   if (el.getAttribute('gate') === 'cX' || el.getAttribute('gate') === 'cXt') {
-    var moment = source.getAttribute('moment');
     var targetMomentEls = document.querySelectorAll(`div[moment="${moment}"]`);
     for (var i = 0; i < targetMomentEls.length; i++) {
       if (hasGate(targetMomentEls[i], 'cX') || hasGate(targetMomentEls[i], 'cXt')) {
         targetMomentEls[i].removeChild(targetMomentEls[i].childNodes[0]);
+        Conquer.operations[moment][targetMomentEls[i].getAttribute('row')] = 'ID';
         break;
       }
     }
@@ -169,7 +172,10 @@ function checkPlacement(el, target, source) {
       }
       else {
         if (validPlacement && cXtCount === 0) {
-          targetEl.innerHTML = `<div class="one-tall cx gate" gate="cXt" id="cXTarget">CNOTt</div>`;
+          el.classList.remove(targetRow > row ? 'before' : 'after');
+          el.classList.add(targetRow > row ? 'after' : 'before');
+          targetEl.innerHTML = `<div class="one-tall cx gate" gate="cXt" id="cXTarget">target</div>`;
+          Conquer.operations[moment][targetRow] = 'cXt';
         }
       }
     }
@@ -177,9 +183,13 @@ function checkPlacement(el, target, source) {
   else if (el.getAttribute('gate') === 'cXt') {
     validPlacement = false;
     if (hasGate(document.querySelector(`div[row="${row + 1}"][moment="${moment}"]`), 'cX')) {
+      document.querySelector(`div[row="${row + 1}"][moment="${moment}"]`).childNodes[0].classList.add('before');
+      document.querySelector(`div[row="${row + 1}"][moment="${moment}"]`).childNodes[0].classList.remove('after');
       validPlacement = true;
     }
     else if (hasGate(document.querySelector(`div[row="${row - 1}"][moment="${moment}"]`), 'cX')) {
+      document.querySelector(`div[row="${row - 1}"][moment="${moment}"]`).childNodes[0].classList.add('after');
+      document.querySelector(`div[row="${row - 1}"][moment="${moment}"]`).childNodes[0].classList.remove('before');
       validPlacement = true;
     }
     if (!validPlacement) {
@@ -187,6 +197,7 @@ function checkPlacement(el, target, source) {
       for (var i = 0; i < targetMomentEls.length; i++) {
         if (hasGate(targetMomentEls[i], 'cX')) {
           targetMomentEls[i].removeChild(targetMomentEls[i].childNodes[0]);
+          Conquer.operations[moment][targetMomentEls[i].getAttribute('row')] = 'ID';
           break;
         }
       }
@@ -200,6 +211,9 @@ function checkPlacement(el, target, source) {
     Conquer.operations[moment][row] = el.getAttribute('gate');
   }
   if (source !== null) {
+    if (source.getAttribute('moment') !== null && source.getAttribute('row') !== null) {
+      Conquer.operations[source.getAttribute('moment')][source.getAttribute('row')] = 'ID';
+    }
     var sourceMomentEls = document.querySelectorAll(`div[moment="${source.getAttribute('moment')}"]`);
     for (var i = 0; i < sourceMomentEls.length; i++) {
       if (sourceMomentEls[i].childNodes.length === 1) {
