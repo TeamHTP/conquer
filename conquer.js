@@ -2,13 +2,13 @@ const Conquer = new Vue({
   el: '#conquer',
   data: {
     wires: 3,
-    moments: 5,
+    moments: 2,
     circuitStyle: '',
     //wireStates: [math.matrix([1, 0]), math.matrix([1, 0]), math.matrix([1, 0])],
     wireStatesBoolean: [false, false, false],
     state: math.matrix([1, 0, 0, 0, 0, 0, 0, 0]),
     step: -1,
-    operations: math.map(math.zeros([5, 3]), v => "ID"),
+    operations: math.map(math.zeros([2, 3]), v => "ID"),
     GATES: GATES,
   },
   computed: {
@@ -57,6 +57,29 @@ const Conquer = new Vue({
     getOperationMatrix: function (step) {
       return this.joinControlledNot(step).reduce((a, v) => math.kron(a, v));
     },
+    resizeMoments: function () {
+      var highestUsed = 0;
+      for (var m = 0; m < this.operations.length; m++) {
+        for (var w = 0; w < this.operations[m].length; w++) {
+          if (this.operations[m][w] !== 'ID' && m > highestUsed) {
+            highestUsed = m;
+          }
+        }
+      }
+      if (highestUsed > this.moments - 2) {
+        this.moments += 1;
+        this.$forceUpdate();
+      }
+      if (highestUsed < this.moments - 2) {
+        this.moments -= (this.moments - 2 - highestUsed);
+        this.$forceUpdate();
+      }
+      this.$nextTick(function () {
+        Array.from(document.querySelectorAll(`.slot[moment="${parseInt(this.moments) - 1}"]`)).forEach((e) => {
+          drake.containers.push(e);
+        });
+      });
+    }
   },
   watch: {
     wires: function (val) {
@@ -66,20 +89,20 @@ const Conquer = new Vue({
       } else if(val > this.wireStates.length) {
         this.wireStatesBoolean.push(false);
       }
-      this.$nextTick(function () {
-        $('select.dropdown').dropdown();
-      });
     },
     moments: function (val) {
       this.operations = math.resize(this.operations, [val, this.wires], "ID");
-      this.circuitStyle = `width: ${val * 180}px;`;
-      this.$nextTick(function () {
-        $('select.dropdown').dropdown();
-      });
+      this.circuitStyle = `width: ${(val + 1) * 180}px;`;
     },
     wireStatesBoolean: function (val) {
       this.state = this.tensorProductState;
     },
+    operations: {
+      handler: function (val) {
+        this.resizeMoments();
+      },
+      deep: true
+    }
   },
 });
 
@@ -121,12 +144,14 @@ drake.on('remove', function (el, container, source) {
   var row = parseInt(source.getAttribute('row'), 10);
   var moment = source.getAttribute('moment');
   Conquer.operations[moment][row] = 'ID';
+  Conquer.resizeMoments();
   if (el.getAttribute('gate') === 'cX' || el.getAttribute('gate') === 'cXt') {
     var targetMomentEls = document.querySelectorAll(`div[moment="${moment}"]`);
     for (var i = 0; i < targetMomentEls.length; i++) {
       if (hasGate(targetMomentEls[i], 'cX') || hasGate(targetMomentEls[i], 'cXt')) {
         targetMomentEls[i].removeChild(targetMomentEls[i].childNodes[0]);
         Conquer.operations[moment][targetMomentEls[i].getAttribute('row')] = 'ID';
+        this.resizeMoments();
         break;
       }
     }
@@ -181,6 +206,7 @@ function checkPlacement(el, target, source) {
           el.classList.add(targetRow > row ? 'after' : 'before');
           targetEl.innerHTML = `<div class="one-tall cx gate" gate="cXt" id="cXTarget">target</div>`;
           Conquer.operations[moment][targetRow] = 'cXt';
+          Conquer.resizeMoments();
         }
       }
     }
@@ -203,6 +229,7 @@ function checkPlacement(el, target, source) {
         if (hasGate(targetMomentEls[i], 'cX')) {
           targetMomentEls[i].removeChild(targetMomentEls[i].childNodes[0]);
           Conquer.operations[moment][targetMomentEls[i].getAttribute('row')] = 'ID';
+          Conquer.resizeMoments();
           break;
         }
       }
@@ -211,13 +238,16 @@ function checkPlacement(el, target, source) {
   if (!validPlacement) {
     el.parentElement.removeChild(el);
     Conquer.operations[moment][row] = 'ID';
+    Conquer.resizeMoments();
   }
   else {
     Conquer.operations[moment][row] = el.getAttribute('gate');
+    Conquer.resizeMoments();
   }
   if (source !== null) {
     if (source.getAttribute('moment') !== null && source.getAttribute('row') !== null) {
       Conquer.operations[source.getAttribute('moment')][source.getAttribute('row')] = 'ID';
+      Conquer.resizeMoments();
     }
     var sourceMomentEls = document.querySelectorAll(`div[moment="${source.getAttribute('moment')}"]`);
     for (var i = 0; i < sourceMomentEls.length; i++) {

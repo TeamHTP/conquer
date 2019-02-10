@@ -15,9 +15,13 @@
   margin-bottom: 8px;
 }
 
+#conquer {
+  overflow-x: auto;
+}
+
 .circuit {
   padding-left: 16px;
-  overflow-x: auto;
+  width: 540px;
   height: calc(100vh - 158px);
 }
 
@@ -42,8 +46,7 @@
   top: 40px;
   left: 62px;
   border-top: 8px solid #eee;
-  background: black;
-  width: 900px;
+  width: calc(100% - 62px);
   transform: translateY(-50%);
   z-index: -1;
 }
