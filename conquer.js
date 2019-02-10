@@ -4,6 +4,7 @@ const Conquer = new Vue({
     wires: 3,
     moments: 3,
     circuitStyle: '',
+    probabilityStyle: '',
     //wireStates: [math.matrix([1, 0]), math.matrix([1, 0]), math.matrix([1, 0])],
     wireStatesBoolean: [false, false, false],
     state: math.matrix([1, 0, 0, 0, 0, 0, 0, 0]),
@@ -127,7 +128,7 @@ const Conquer = new Vue({
     },
     moments: function (val) {
       this.operations = math.resize(this.operations, [val, this.wires], "ID");
-      this.circuitStyle = `width: ${(val + 1) * 180}px;`;
+      this.circuitStyle = `width: ${((val + 2) * 180) - 50}px;`;
     },
     operations: {
       handler: function (val) {

@@ -61,8 +61,8 @@
     <div class="circuit" id="circuit" :style="circuitStyle">
       <div class="wire" v-for="(row, rIndex) in transposedOperations" :id="'wire-' + rIndex">
         <div class="one-tall gate" style="border-top-left-radius: 0; border-bottom-left-radius: 0;" v-on:click="if (step == -1) {wireStatesBoolean[rIndex] = !wireStatesBoolean[rIndex]; $forceUpdate();}">q{{ rIndex }} |{{ wireStatesBoolean[rIndex] ? '1' : '0' }}&#10217;</div>
-        <div class="slot" v-for="(col, cIndex) in row" :class="{highlight: step == cIndex}" :moment="cIndex" :row="rIndex" :gate="operations[cIndex][rIndex]"></div>
-        <div class="one-tall gate qubit-peek" :class="{highlight: step == moments - 1}" style="border-top-right-radius: 0; border-bottom-right-radius: 0;" >q{{ rIndex }} P(1)={{ probabilities[rIndex].toFixed(2) }}</div>
+        <div class="slot" v-if="cIndex < moments - 1" v-for="(col, cIndex) in row" :class="{highlight: step == cIndex}" :moment="cIndex" :row="rIndex" :gate="operations[cIndex][rIndex]"></div>
+        <div class="one-tall gate qubit-peek" :class="{highlight: step == moments - 1}" style="border-top-right-radius: 0; border-bottom-right-radius: 0;">q{{ rIndex }} P(1)={{ probabilities[rIndex].toFixed(2) }}</div>
       </div>
     </div>
 
@@ -71,10 +71,10 @@
         <div class="column">
           <button class="ui labeled icon button" v-on:click="simulateBackward()">
             <i class="left arrow icon"></i>
-            Backward
+            BACKWARD
           </button>
           <button class="ui right labeled icon button" v-on:click="simulateForward()">
-            Forward
+            FORWARD
             <i class="right arrow icon"></i>
           </button>
         </div>

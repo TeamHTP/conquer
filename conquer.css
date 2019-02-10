@@ -22,7 +22,7 @@
 
 .circuit {
   padding-left: 16px;
-  width: 720px;
+  width: 900px;
   height: calc(100vh - 158px);
 }
 
@@ -35,7 +35,7 @@
 }
 
 .wire {
-  width: 100%;
+  width: calc(100% - 250px);
   margin-top: 32px;
   margin-bottom: 32px;
   position: relative;
@@ -139,9 +139,9 @@
 }
 
 .qubit-peek {
-  position: absolute;
+  position: fixed;
   margin-right: 16px;
-  right: -48px;
+  right: 16px;
   z-index: 10;
 }
 
