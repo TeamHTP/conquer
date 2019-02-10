@@ -133,6 +133,11 @@ drake.on('remove', function (el, container, source) {
   }
 });
 
+drake.on('drag', function (el, source) {
+  el.classList.remove('after');
+  el.classList.remove('before');
+});
+
 function checkPlacement(el, target, source) {
   var validPlacement = true;
   var row = parseInt(target.getAttribute('row'), 10);
