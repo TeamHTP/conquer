@@ -60,6 +60,12 @@ GATES.sqrtSWAP = math.matrix([
   [math.bignumber(0), math.bignumber(0), math.bignumber(0), math.bignumber(1)],
 ]);
 
+// Square Root Not
+GATES.sqrtNOT = math.map(math.matrix([
+  [math.eval('1+i'), math.eval('1-i')],
+  [math.eval('1-i'), math.eval('1+i')],
+]), v => v * math.eval('1/2'));
+
 GATES.ID = math.identity(2);
 
 var Duq = {};
